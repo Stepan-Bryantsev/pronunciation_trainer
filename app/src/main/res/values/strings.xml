@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Pronunciation Trainer</string>
+    <string name="SignIn">Please sign in</string>
+    <string name="noAccount"><u>Create an account</u></string>
+    <string name="login">Email</string>
+    <string name="password">Password</string>
+    <string name="Error">Incorrect email or password</string>
+    <string name="CreateAccount">Create account</string>
+    <string name="ErrorCreatingAccount">There is already an acount like this</string>
+    <string name="Say">Say: </string>
+    <string name="AboutUs">We are a group of students from HSE. You can report all bugs to baranovgregor@gmail.com</string>
+</resources>

@@ -24,5 +24,6 @@ from api_pronunciation import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v0/auth/', include('rest_framework.urls')),
-    path('api/v0/words/', include('words.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('api/v0/', include('words.urls')),
+    path('api/v0/', include('users.urls')),
+]

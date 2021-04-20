@@ -62,6 +62,7 @@
         android:layout_height="54dp"
         android:background="@drawable/say_button"
         android:text="Listen to correct pronunciation"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

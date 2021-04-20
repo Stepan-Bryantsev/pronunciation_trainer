@@ -54,6 +54,7 @@
         android:layout_height="46dp"
         android:background="@drawable/say_button"
         android:text="Create an account"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

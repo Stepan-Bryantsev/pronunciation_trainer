@@ -47,6 +47,7 @@
         android:layout_width="106dp"
         android:layout_height="46dp"
         android:background="@drawable/say_button"
+        android:textColor="#FFFFFF"
         android:text="@android:string/search_go"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

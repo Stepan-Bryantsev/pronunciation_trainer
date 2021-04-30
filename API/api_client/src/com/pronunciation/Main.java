@@ -6,11 +6,11 @@ import java.util.Map;
 public class Main {
 
     public static void main(String[] args)  {
-        Client client = new Client("http://127.0.0.1:8000/api/v0/");
+        Client client = new Client("http://StepanBryantsev.pythonanywhere.com/api/v0/");
 
         Map<String, String> loginMap = new HashMap<>();
         loginMap.put("email_or_username", "root");
-        loginMap.put("password", "123456789");
+        loginMap.put("password", "toor");
 
         client.Login(loginMap, new AsyncResult<>() {
             @Override

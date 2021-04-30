@@ -25,7 +25,7 @@ SECRET_KEY = '&k*hbn_97pzkam)w!mamt56zhl3=zs$2u#ngx2tms8%2*31&n@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['http://StepanBryantsev.pythonanywhere.com']
+ALLOWED_HOSTS = ['StepanBryantsev.pythonanywhere.com']
 
 
 # Application definition
@@ -125,8 +125,3 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-
-STATIC_URL = '/static/'
-STATIC_AUDIO = 'static/words_records/'
-MEDIA_URL = '/media/'
-MEDIA_ROOT = 'static/words_records'

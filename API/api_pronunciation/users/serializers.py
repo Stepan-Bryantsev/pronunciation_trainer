@@ -1,22 +1,47 @@
+from django.contrib.auth.password_validation import validate_password
 from django.utils.translation import gettext_lazy as _
 
 from django.contrib.auth import authenticate
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 
 from users.models import User
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True, min_length=8, max_length=128)
+    email = serializers.EmailField(
+        required=True,
+        validators=[UniqueValidator(queryset=User.objects.all())]
+    )
+
+    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password')
+        fields = ('username', 'password', 'email', 'first_name', 'last_name')
+        extra_kwargs = {
+            'username': {'required': True},
+        }
+
+    def create(self, validated_data):
+        user = User.objects.create(
+            username=validated_data['username'],
+            email=validated_data['email'],
+        )
+        if 'first_name' in validated_data.keys():
+            user.first_name = validated_data['first_name']
+        if 'last_name' in validated_data.keys():
+            user.first_name = validated_data['last_name']
+
+        user.set_password(validated_data['password'])
+        user.save()
+
+        return user
 
 
 class UserLoginSerializer(serializers.Serializer):
     email_or_username = serializers.CharField(
-        label=_("Username"),
+        label=_("Email or Username"),
         write_only=True
     )
     password = serializers.CharField(
@@ -39,7 +64,9 @@ class UserLoginSerializer(serializers.Serializer):
 
         user = authenticate(request=self.context.get('request'),
                             username=email_or_username, password=password)
+
         if not user:
+
             user = authenticate(request=self.context.get('request'),
                                 email=email_or_username, password=password)
             if not user:

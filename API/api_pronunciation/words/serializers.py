@@ -8,4 +8,4 @@ class WordDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Word
-        fields = '__all__'
+        fields = ('word', 'transcription',)

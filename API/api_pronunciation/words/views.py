@@ -27,7 +27,7 @@ class AllWordsView(ListAPIView):
 
 class SearchWordsApiView(ListAPIView):
     serializer_class = WordDetailSerializer
-    #permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         return Word.objects.filter(word__contains=self.kwargs['search_word'])

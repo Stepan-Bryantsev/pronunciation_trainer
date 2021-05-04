@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = '&k*hbn_97pzkam)w!mamt56zhl3=zs$2u#ngx2tms8%2*31&n@'
 DEBUG = False
 
 ALLOWED_HOSTS = ['StepanBryantsev.pythonanywhere.com']
-
 
 # Application definition
 
@@ -72,7 +70,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'api_pronunciation.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -121,7 +118,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/

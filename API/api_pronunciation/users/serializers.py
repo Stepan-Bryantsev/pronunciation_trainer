@@ -62,20 +62,15 @@ class UserLoginSerializer(serializers.Serializer):
             msg = _('Must include "password"')
             raise serializers.ValidationError(msg, code='authorization')
 
-        user = authenticate(request=self.context.get('request'),
-                            username=email_or_username, password=password)
+        user = (User.objects.filter(username=email_or_username) |
+                User.objects.filter(email=email_or_username)).first()
+        if user is None:
+            raise serializers.ValidationError({'email_or_username': 'Wrong email or username'}, code='authorization')
 
-        if not user:
-            user_by_email = User.objects.all().get(email=email_or_username)
-            if not user_by_email:
-                msg = _('Unable to log in with provided credentials.')
-                raise serializers.ValidationError(msg, code='authorization')
-            else:
-                user = authenticate(request=self.context.get('request'),
-                                    username=user_by_email.username, password=password)
-                if not user:
-                    msg = _('Unable to log in with provided credentials.')
-                    raise serializers.ValidationError(msg, code='authorization')
+        user = authenticate(request=self.context.get('request'),
+                            username=user.username, password=password)
+        if user is None:
+            raise serializers.ValidationError({'email_or_username': 'Wrong password'}, code='authorization')
 
         attrs['user'] = user
         return attrs

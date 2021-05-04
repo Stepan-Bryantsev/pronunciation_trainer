@@ -6,11 +6,11 @@ import java.util.Map;
 public class Main {
 
     public static void main(String[] args)  {
-        Client client = new Client("http://127.0.0.1:8000/api/v0/");
+        Client client = new Client("http://StepanBryantsev.pythonanywhere.com/api/v0/");
 
         Map<String, String> loginMap = new HashMap<>();
         loginMap.put("email_or_username", "root@root.root");
-        loginMap.put("password", "toor");
+        loginMap.put("password", "toorr");
 
         client.Login(loginMap, new AsyncResult<>() {
             @Override
@@ -26,23 +26,23 @@ public class Main {
             }
         });
 
-//        Map<String, String> registrationMap = new HashMap<>();
-//        registrationMap.put("username", "1");
-//        registrationMap.put("first_name", "qwerty");
-//        registrationMap.put("last_name", "qwerty");
-//        registrationMap.put("email", "qwe1@qwe1.qwe1");
-//        registrationMap.put("password", "qwerty.qwerty");
-//
-//        client.Register(registrationMap, new AsyncResult<Boolean, ErrorResponse>() {
-//            @Override
-//            public void onSuccess(Boolean result) {
-//                System.out.println(result);
-//            }
-//
-//            @Override
-//            public void onFail(ErrorResponse error) {
-//                System.out.println(error.getErrors());
-//            }
-//        });
+        Map<String, String> registrationMap = new HashMap<>();
+        registrationMap.put("username", "1");
+        registrationMap.put("first_name", "qwerty");
+        registrationMap.put("last_name", "qwerty");
+        registrationMap.put("email", "qwe1@qwe1.qwe1");
+        registrationMap.put("password", "qwerty.qwerty");
+
+        client.Register(registrationMap, new AsyncResult<Boolean, ErrorResponse>() {
+            @Override
+            public void onSuccess(Boolean result) {
+                System.out.println(result);
+            }
+
+            @Override
+            public void onFail(ErrorResponse error) {
+                System.out.println(error.getErrors());
+            }
+        });
     }
 }

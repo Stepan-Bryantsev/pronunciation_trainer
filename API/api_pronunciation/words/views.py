@@ -23,6 +23,7 @@ class AllWordsView(ListAPIView):
     serializer_class = WordDetailSerializer
     queryset = Word.objects.all()
     pagination_class = PageNumberPagination
+    permission_classes = (IsAuthenticated,)
 
 
 class SearchWordsApiView(ListAPIView):
@@ -36,13 +37,13 @@ class SearchWordsApiView(ListAPIView):
 class WordDetailView(RetrieveAPIView):
     serializer_class = WordDetailSerializer
     queryset = Word.objects.all()
-    #permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
 
 
 class RandomWordView(RetrieveAPIView):
     serializer_class = WordDetailSerializer
     queryset = Word.objects.all()
-    #permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
 
     def get_object(self):
         return random.choice(self.get_queryset())

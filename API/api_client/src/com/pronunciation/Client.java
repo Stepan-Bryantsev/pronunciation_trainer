@@ -80,7 +80,12 @@ public class Client {
     Call call = httpClient.newCall(request);
     call.enqueue(new Callback() {
       public void onResponse(Call call, Response response) {
-        result.onSuccess(true);
+        if (response.code() == 200) {
+          result.onSuccess(true);
+        }
+        else {
+          result.onFail(new ErrorResponse(response));
+        }
       }
 
       public void onFailure(Call call, IOException e) {

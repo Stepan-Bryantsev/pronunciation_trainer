@@ -66,12 +66,16 @@ class UserLoginSerializer(serializers.Serializer):
                             username=email_or_username, password=password)
 
         if not user:
-
-            user = authenticate(request=self.context.get('request'),
-                                email=email_or_username, password=password)
-            if not user:
+            user_by_email = User.objects.all().get(email=email_or_username)
+            if not user_by_email:
                 msg = _('Unable to log in with provided credentials.')
                 raise serializers.ValidationError(msg, code='authorization')
+            else:
+                user = authenticate(request=self.context.get('request'),
+                                    username=user_by_email.username, password=password)
+                if not user:
+                    msg = _('Unable to log in with provided credentials.')
+                    raise serializers.ValidationError(msg, code='authorization')
 
         attrs['user'] = user
         return attrs

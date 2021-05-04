@@ -6,11 +6,11 @@ import java.util.Map;
 public class Main {
 
     public static void main(String[] args)  {
-        Client client = new Client("http://StepanBryantsev.pythonanywhere.com/api/v0/");
+        Client client = new Client("http://127.0.0.1:8000/api/v0/");
 
         Map<String, String> loginMap = new HashMap<>();
-        loginMap.put("email_or_username", "root@root.root");
-        loginMap.put("password", "toorr");
+        loginMap.put("email_or_username", "root");
+        loginMap.put("password", "toor");
 
         client.Login(loginMap, new AsyncResult<>() {
             @Override
@@ -26,22 +26,21 @@ public class Main {
             }
         });
 
-        Map<String, String> registrationMap = new HashMap<>();
-        registrationMap.put("username", "1");
-        registrationMap.put("first_name", "qwerty");
-        registrationMap.put("last_name", "qwerty");
-        registrationMap.put("email", "qwe1@qwe1.qwe1");
-        registrationMap.put("password", "qwerty.qwerty");
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-        client.Register(registrationMap, new AsyncResult<Boolean, ErrorResponse>() {
+        client.GetRandomWord(new AsyncResult<Word, ErrorResponse>() {
             @Override
-            public void onSuccess(Boolean result) {
-                System.out.println(result);
+            public void onSuccess(Word result) {
+                System.out.println(result.getWord());
             }
 
             @Override
             public void onFail(ErrorResponse error) {
-                System.out.println(error.getErrors());
+                System.out.println(error.getStatusCode());
             }
         });
     }

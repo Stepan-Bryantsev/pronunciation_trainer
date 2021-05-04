@@ -16,7 +16,7 @@ public class Client {
 
   private final String domain;
   private String token = null;
-  private final OkHttpClient httpClient = new OkHttpClient().newBuilder().build();
+  private final OkHttpClient httpClient = new OkHttpClient.Builder().build();
   Gson gson = new Gson();
 
   public Client(String domain) {
@@ -55,21 +55,6 @@ public class Client {
     });
   }
 
-  private void acceptLoginResponse(Response response, AsyncResult<String, ErrorResponse> result) {
-    if (response.code() != 200) {
-      result.onFail(new ErrorResponse(response));
-      return;
-    }
-    String token = null;
-    try {
-      token = gson.fromJson(response.body().string(), Map.class).get("token").toString();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    this.token = token;
-    result.onSuccess(token);
-  }
-
   public void Register(Map<String, String> dataMap, AsyncResult<Boolean, ErrorResponse> result) {
     Request request = new Request.Builder()
         .url(domain + Settings.REGISTER_URL_PART)
@@ -92,5 +77,52 @@ public class Client {
         result.onFail(new ErrorResponse(null));
       }
     });
+  }
+
+  public void GetRandomWord(AsyncResult<Word, ErrorResponse> result) {
+    System.out.println("word" + token);
+    Request request = new Request.Builder()
+        .url(domain + Settings.RANDOM_WORD_URL_PART)
+        .get()
+        .addHeader("WWW-Authenticate", "Token")
+        .header("Authorization", "Token " + token)
+        .build();
+
+    Call call = httpClient.newCall(request);
+    call.enqueue(new Callback() {
+      public void onResponse(Call call, Response response) {
+        System.out.println(response.code());
+        if (response.code() == 200) {
+          try {
+            result.onSuccess(gson.fromJson(response.body().string(), Word.class));
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }
+        else {
+          result.onFail(new ErrorResponse(response));
+        }
+      }
+
+      public void onFailure(Call call, IOException e) {
+        result.onFail(new ErrorResponse(null));
+      }
+    });
+  }
+
+  private void acceptLoginResponse(Response response, AsyncResult<String, ErrorResponse> result) {
+    if (response.code() != 200) {
+      result.onFail(new ErrorResponse(response));
+      return;
+    }
+    String token = null;
+    try {
+      token = gson.fromJson(response.body().string(), Map.class).get("token").toString();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    this.token = token;
+    System.out.println("real " + token);
+    result.onSuccess("" + token);
   }
 }

@@ -31,7 +31,7 @@ class SearchWordsApiView(ListAPIView):
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        return Word.objects.filter(word__contains=self.kwargs['search_word'])
+        return Word.objects.filter(word__contains=self.kwargs['search_word'])[:10]
 
 
 class WordDetailView(RetrieveAPIView):

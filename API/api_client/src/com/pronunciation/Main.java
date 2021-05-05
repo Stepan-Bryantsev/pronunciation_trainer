@@ -1,5 +1,6 @@
 package com.pronunciation;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,10 +33,10 @@ public class Main {
             e.printStackTrace();
         }
 
-        client.GetRandomWord(new AsyncResult<Word, ErrorResponse>() {
+        client.SearchWord("o", new AsyncResult<ArrayList<Word>, ErrorResponse>() {
             @Override
-            public void onSuccess(Word result) {
-                System.out.println(result.getWord());
+            public void onSuccess(ArrayList<Word> result) {
+                System.out.println(result.size());
             }
 
             @Override

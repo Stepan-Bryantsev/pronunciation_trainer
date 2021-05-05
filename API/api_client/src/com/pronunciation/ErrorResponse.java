@@ -21,7 +21,6 @@ public class ErrorResponse {
       statusCode = response.code();
       message = "Validation error";
       Gson gson = new Gson();
-      System.out.println(response.code());
       try {
         errors = gson.fromJson(response.body().string(), Map.class);
       } catch (IOException e) {

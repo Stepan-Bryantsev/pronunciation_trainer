@@ -2,6 +2,7 @@ package com.pronunciation;
 
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -65,7 +66,7 @@ public class Client {
     Call call = httpClient.newCall(request);
     call.enqueue(new Callback() {
       public void onResponse(Call call, Response response) {
-        if (response.code() == 200) {
+        if (response.code() == 201) {
           result.onSuccess(true);
         }
         else {
@@ -80,21 +81,52 @@ public class Client {
   }
 
   public void GetRandomWord(AsyncResult<Word, ErrorResponse> result) {
-    System.out.println("word" + token);
     Request request = new Request.Builder()
         .url(domain + Settings.RANDOM_WORD_URL_PART)
         .get()
-        .addHeader("WWW-Authenticate", "Token")
         .header("Authorization", "Token " + token)
         .build();
 
     Call call = httpClient.newCall(request);
     call.enqueue(new Callback() {
       public void onResponse(Call call, Response response) {
-        System.out.println(response.code());
         if (response.code() == 200) {
           try {
             result.onSuccess(gson.fromJson(response.body().string(), Word.class));
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }
+        else {
+          result.onFail(new ErrorResponse(response));
+        }
+      }
+
+      public void onFailure(Call call, IOException e) {
+        result.onFail(new ErrorResponse(null));
+      }
+    });
+  }
+
+  public void SearchWord(String search, AsyncResult<ArrayList<Word>, ErrorResponse> result) {
+    Request request = new Request.Builder()
+        .url(domain + Settings.SEARCH_WORD_URL_PART + search + '/')
+        .get()
+        .header("Authorization", "Token " + token)
+        .build();
+
+    Call call = httpClient.newCall(request);
+    call.enqueue(new Callback() {
+      public void onResponse(Call call, Response response) {
+        try {
+          System.out.println(response.body().string());
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+        if (response.code() == 200) {
+          ArrayList<Word> exClass = new ArrayList<>();
+          try {
+            result.onSuccess(gson.fromJson(response.body().string(), exClass.getClass()));
           } catch (IOException e) {
             e.printStackTrace();
           }
@@ -122,7 +154,6 @@ public class Client {
       e.printStackTrace();
     }
     this.token = token;
-    System.out.println("real " + token);
     result.onSuccess("" + token);
   }
 }

@@ -74,13 +74,12 @@ class CheckPronunciationView(GenericAPIView):
     permission_classes = (IsAuthenticated,)
     parser_classes = (MultiPartParser,)
 
-    def put(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         f = request.FILES['file']
         handle_uploaded_file(f)
 
         score = check_pronunciation(request.user, self.get_object(), 'media/user_audio.mp3')
-        response_data = {'score': score}
-        return Response(status=status.HTTP_200_OK, data=response_data)
+        return Response(status=status.HTTP_200_OK, data={'score': score})
 
 
 def handle_uploaded_file(f):

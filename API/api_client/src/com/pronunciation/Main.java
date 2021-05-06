@@ -1,7 +1,7 @@
 package com.pronunciation;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Main {
@@ -33,15 +33,15 @@ public class Main {
             e.printStackTrace();
         }
 
-        client.SearchWord("o", new AsyncResult<ArrayList<Word>, ErrorResponse>() {
+        client.GetCorrectAudio("crazy", new AsyncResult<List<Word>, ErrorResponse>() {
             @Override
-            public void onSuccess(ArrayList<Word> result) {
-                System.out.println(result.size());
+            public void onSuccess(List<Word> result) {
+
             }
 
             @Override
             public void onFail(ErrorResponse error) {
-                System.out.println(error.getStatusCode());
+
             }
         });
     }

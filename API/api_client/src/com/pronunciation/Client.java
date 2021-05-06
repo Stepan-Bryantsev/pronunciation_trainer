@@ -1,8 +1,10 @@
 package com.pronunciation;
 
 import com.google.gson.Gson;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -81,6 +83,8 @@ public class Client {
   }
 
   public void GetRandomWord(AsyncResult<Word, ErrorResponse> result) {
+    if (token == null)
+      throw new LoginException("No token.");
     Request request = new Request.Builder()
         .url(domain + Settings.RANDOM_WORD_URL_PART)
         .get()
@@ -108,9 +112,11 @@ public class Client {
     });
   }
 
-  public void SearchWord(String search, AsyncResult<ArrayList<Word>, ErrorResponse> result) {
+  public void SearchWord(String search, AsyncResult<List<Word>, ErrorResponse> result) {
+    if (token == null)
+      throw new LoginException("No token.");
     Request request = new Request.Builder()
-        .url(domain + Settings.SEARCH_WORD_URL_PART + search + '/')
+        .url(domain + String.format(Settings.SEARCH_WORD_URL_PART, search))
         .get()
         .header("Authorization", "Token " + token)
         .build();
@@ -118,15 +124,9 @@ public class Client {
     Call call = httpClient.newCall(request);
     call.enqueue(new Callback() {
       public void onResponse(Call call, Response response) {
-        try {
-          System.out.println(response.body().string());
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
         if (response.code() == 200) {
-          ArrayList<Word> exClass = new ArrayList<>();
           try {
-            result.onSuccess(gson.fromJson(response.body().string(), exClass.getClass()));
+            result.onSuccess(Arrays.asList(gson.fromJson(response.body().string(), Word[].class)));
           } catch (IOException e) {
             e.printStackTrace();
           }
@@ -138,6 +138,29 @@ public class Client {
 
       public void onFailure(Call call, IOException e) {
         result.onFail(new ErrorResponse(null));
+      }
+    });
+  }
+
+  public void GetCorrectAudio(String word, AsyncResult<List<Word>, ErrorResponse> result) {
+    Request request = new Request.Builder()
+        .url(domain + String.format(Settings.AUDIO_WORD_URL_PART, word))
+        .header("Authorization", "Token " + token)
+        .build();
+
+    httpClient.newCall(request).enqueue(new Callback() {
+      public void onResponse(Call call, Response response) throws IOException {
+        if (!response.isSuccessful()) {
+          throw new IOException("Failed to download file: " + response);
+        }
+        FileOutputStream fos = new FileOutputStream(String.format("/correct.mp3", word));
+        fos.write(response.body().bytes());
+        fos.close();
+        System.out.println("ok");
+      }
+
+      public void onFailure(Call call, IOException e) {
+        e.printStackTrace();
       }
     });
   }

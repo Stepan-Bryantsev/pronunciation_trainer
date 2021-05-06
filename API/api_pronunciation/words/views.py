@@ -58,8 +58,6 @@ class WordAudioView(GenericAPIView):
 
         path = self.get_object().audio_path
 
-        check_pronunciation(request.user, "qwe")
-
         with open(path, 'rb') as f:
             response = HttpResponse()
             response.write(f.read())
@@ -68,14 +66,18 @@ class WordAudioView(GenericAPIView):
             return response
 
 
-class AudioUploadView(APIView):
-    parser_class = (AudioUploadParser,)
+class CheckPronunciationView(GenericAPIView):
+    serializer_class = WordDetailSerializer
+    queryset = Word.objects.all()
     permission_classes = (IsAuthenticated,)
+    parser_classes = (FileUploadParser,)
 
-    def post(self, request, filename, format=None):
+    def put(self, request):
         if 'file' not in request.data:
             return Response(status=400)
 
         f = request.data['file']
+
+        check_pronunciation(request.user, self.get_object().word, f)
 
         return Response(status=status.HTTP_200_OK)

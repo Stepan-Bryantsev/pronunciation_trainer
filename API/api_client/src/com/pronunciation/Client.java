@@ -1,6 +1,7 @@
 package com.pronunciation;
 
 import com.google.gson.Gson;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
@@ -10,6 +11,8 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.FormBody.Builder;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -157,6 +160,35 @@ public class Client {
         fos.write(response.body().bytes());
         fos.close();
         System.out.println("ok");
+      }
+
+      public void onFailure(Call call, IOException e) {
+        e.printStackTrace();
+      }
+    });
+  }
+
+  public void CheckPronunciation(String word, String userAudioPath, AsyncResult<Integer, ErrorResponse> result) {
+    RequestBody requestBody = new MultipartBody.Builder()
+        .setType(MultipartBody.FORM)
+        .addFormDataPart("file", "file.mp3",
+            RequestBody.create(MediaType.parse("audio/mp3; charset=utf-8"),
+                new File(userAudioPath)))
+        .build();
+
+    Request request = new Request.Builder()
+        .url(domain + String.format(Settings.CHECK_WORD_URL_PART, word))
+        .addHeader("Authorization", "Token " + token)
+        .put(requestBody)
+        .build();
+
+    httpClient.newCall(request).enqueue(new Callback() {
+      public void onResponse(Call call, Response response) {
+        try {
+          System.out.println(response.body().string());
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
       }
 
       public void onFailure(Call call, IOException e) {

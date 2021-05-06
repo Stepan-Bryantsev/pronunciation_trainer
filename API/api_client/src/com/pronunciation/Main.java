@@ -1,13 +1,12 @@
 package com.pronunciation;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Main {
 
     public static void main(String[] args)  {
-        Client client = new Client("http://StepanBryantsev.pythonanywhere.com/api/v0/");
+        Client client = new Client("http://127.0.0.1:8000/api/v0/");
 
         Map<String, String> loginMap = new HashMap<>();
         loginMap.put("email_or_username", "root");
@@ -28,14 +27,14 @@ public class Main {
         });
 
         try {
-            Thread.sleep(5000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        client.GetCorrectAudio("crazy", new AsyncResult<List<Word>, ErrorResponse>() {
+        client.CheckPronunciation("hello", "crazy.mp3", new AsyncResult<Integer, ErrorResponse>() {
             @Override
-            public void onSuccess(List<Word> result) {
+            public void onSuccess(Integer result) {
 
             }
 

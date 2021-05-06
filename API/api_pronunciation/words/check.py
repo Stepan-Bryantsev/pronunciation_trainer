@@ -2,7 +2,6 @@ import random
 from analysis.comparator import Comparator
 
 
-@staticmethod
 def check_pronunciation(user, word, user_audio):
     score = Comparator.compare(user_audio, word.audio_path)
 

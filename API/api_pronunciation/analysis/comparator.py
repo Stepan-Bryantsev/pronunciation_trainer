@@ -54,4 +54,4 @@ class Comparator:
         # print(fourier_transform_score)
         # print(spectrogram_score)
         # print(mfcc_score)
-        return spectrogram_score
+        return (waves_score + fourier_transform_score + spectrogram_score) / 3

@@ -49,9 +49,9 @@ class Comparator:
         waves_score = Comparator.__compare_waves(user_audio, reference_audio)
         fourier_transform_score = Comparator.__compare_fourier_transform(user_audio, reference_audio)
         spectrogram_score = Comparator.__compare_spectrogram(user_audio, reference_audio)
-        # mfcc_score = Comparator.__compare_mfcc(user_audio, reference_audio)
+        mfcc_score = Comparator.__compare_mfcc(user_audio, reference_audio)
         # print(waves_score)
         # print(fourier_transform_score)
         # print(spectrogram_score)
         # print(mfcc_score)
-        return (waves_score + fourier_transform_score + spectrogram_score) / 3
+        return fourier_transform_score * 0.2 + spectrogram_score * 0.4 + mfcc_score * 0.4

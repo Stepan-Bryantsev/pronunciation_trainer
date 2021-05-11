@@ -25,7 +25,7 @@ class ImageComparator:
         for i in range(len(first_hash)):
             if first_hash[i] != second_hash[i]:
                 errors_count += 1
-        return errors_count
+        return errors_count ** 2
 
     @staticmethod
     def compare_images(first_path, second_path):

@@ -29,9 +29,12 @@ class Command(BaseCommand):
 
     @staticmethod
     def get_transcription(word):
-        response = requests.get("https://wooordhunt.ru/word/" + word)
-        soup = bs4.BeautifulSoup(response.text, 'lxml')
-        div = soup.find("div", id="uk_tr_sound")
-        for child in div.recursiveChildGenerator():
-            if child.name == "span":
-                return child.text.strip().replace('|', '[', 1).replace('|', ']', 1)
+        try:
+            response = requests.get("https://wooordhunt.ru/word/" + word)
+            soup = bs4.BeautifulSoup(response.text, 'lxml')
+            div = soup.find("div", id="uk_tr_sound")
+            for child in div.recursiveChildGenerator():
+                if child.name == "span":
+                    return child.text.strip().replace('|', '[', 1).replace('|', ']', 1)
+        except:
+            return ""
